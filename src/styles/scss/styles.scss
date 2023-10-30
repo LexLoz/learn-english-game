@@ -73,6 +73,11 @@ main {
     top: 12px;
 }
 
+#burger__toggle {
+    width: 36px;
+    height: 36px;
+}
+
 #burger__toggle:checked~.burger__visual>span {
     transform: rotate(45deg);
 }

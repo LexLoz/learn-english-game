@@ -89,6 +89,11 @@ main .main__win {
   top: 12px;
 }
 
+#burger__toggle {
+  width: 36px;
+  height: 36px;
+}
+
 #burger__toggle:checked ~ .burger__visual > span {
   transform: rotate(45deg);
 }
@@ -318,6 +323,33 @@ main {
   cursor: pointer;
 }
 
+.timer {
+  display: none;
+  justify-content: center;
+  position: fixed;
+  margin: 0 auto;
+  z-index: 999;
+  font-size: 20rem;
+  color: red;
+  width: 100%;
+  height: 100%;
+}
+
+.statistic {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-around;
+  width: 100%;
+  font-size: 1.5rem;
+}
+.statistic__section-names, .statistic__section-results {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 @media (max-width: 768px) {
   header {
     width: 90%;
@@ -345,15 +377,4 @@ main {
   main {
     padding-top: 1rem;
   }
-}
-.timer {
-  display: none;
-  justify-content: center;
-  position: fixed;
-  margin: 0 auto;
-  z-index: 999;
-  font-size: 20rem;
-  color: red;
-  width: 100%;
-  height: 100%;
 }
