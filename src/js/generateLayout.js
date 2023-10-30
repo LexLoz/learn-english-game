@@ -1,5 +1,6 @@
 import cards from "./cards.js";
 import GameLogic from "./game.js";
+import Stat from "./stat.js";
 
 const path = "./";
 
@@ -58,7 +59,7 @@ function createCard(img, text, isSection, audioSrc) {
 
         const buttonsContainer = document.createElement('div');
         buttonsContainer.classList.add(`${className}__buttons-container`)
-        
+
         buttonsContainer.appendChild(voiceButton);
         buttonsContainer.appendChild(rotate_button);
 
@@ -130,6 +131,32 @@ function generateSectionsList() {
 function generateStatList() {
     GameLogic.interruptGame();
     clearMain();
+
+    const statistic = Stat.storage;
+    console.log('statistic:', statistic)
+    const statLayout = document.createElement('div');
+    statLayout.classList.add('statistic');
+    const sectionNames = document.createElement('div');
+    sectionNames.classList.add('statistic__section-names');
+    const sectionResults = document.createElement('div');
+    sectionResults.classList.add('statistic__section-results')
+    cards[0].forEach((element, index) => {
+        const sectionName = document.createElement('p');
+        sectionName.textContent = element;
+        sectionNames.appendChild(sectionName);
+
+        const sectionResult = document.createElement('p');
+        const values = statistic[index + 1] || {};
+        const wins = values.wins || 0;
+        const looses = values.looses || 0;
+        const total_games = wins + looses
+        let winrate = (wins / (total_games || 1) * 100).toFixed(1);
+        sectionResult.textContent = `${wins} wins, ${looses} looses, winrate: ${winrate > 0 ? winrate + '%' : '-'}`;
+        sectionResults.appendChild(sectionResult);
+    })
+    statLayout.appendChild(sectionNames);
+    statLayout.appendChild(sectionResults);
+    GameLogic.getMain().appendChild(statLayout);
 }
 
 function getBurgerMenuState() {
@@ -165,7 +192,7 @@ function generateBurgerMenu() {
 }
 
 function clearMain() {
-    document.querySelector("main").innerHTML = "<main></main>";
+    GameLogic.getMain().innerHTML = "<main></main>";
 }
 
 export { generateSectionsList, generateBurgerMenu, generateSection, clearMain, generateStarsContainer };

@@ -45,7 +45,7 @@ class GameLogicClass {
         document.querySelector(isCorrect ? '.correct-stars' : '.incorrect-stars').appendChild(star);
     }
 
-    onCardClicked(isCorrect) {
+    soundResult(isCorrect) {
         if (isCorrect) {
             new Audio(`${path}audio/correct.mp3`).play();
             this.addStar(isCorrect);
@@ -55,6 +55,10 @@ class GameLogicClass {
             this.addStar(isCorrect);
             this.gameResults.incorrectWords++;
         }
+    }
+
+    onCardClicked(isCorrect) {
+        this.soundResult(isCorrect);
 
         this.wordsCount--;
         this.correctCard.classList.add(`${className}--hide-all-content`);
@@ -136,14 +140,16 @@ class GameLogicClass {
     }
 
     finishGameLogic() {
-        Stat.writeStat(this.getMain().sectionName, this.gameResults);
-        clearMain();
         const success = this.gameResults.correctWords >=
-            this.gameResults.incorrectWords
+            this.gameResults.incorrectWords;
+        console.log('section index: ', this.sectionIndex);
+        Stat.writeStat(this.sectionIndex, success);
+        clearMain();
         if (success) {
             new Audio(`${path}audio/success.mp3`).play();
             document.querySelector('.main__win').style["display"] = "flex";
         }
+        this.sectionIndex = null;
         this.correctCard = null;
         this.clearGameResults();
         setTimeout(generateSectionsList, success ? 3000 : 1);
@@ -153,7 +159,10 @@ class GameLogicClass {
         const sectionName = this.getMain().sectionName;
         let sectionArray;
         cards[0].forEach((element, index) => {
-            if (element == sectionName) sectionArray = [...cards[index + 1]];
+            if (element == sectionName) {
+                this.sectionIndex = index + 1;
+                sectionArray = [...cards[this.sectionIndex]];
+            }
         })
         return sectionArray;
     }
