@@ -17,6 +17,12 @@ function createParagraph(text) {
     return paragraph;
 }
 
+function addChildsInParent(tag, childs) {
+    childs.forEach(element => {
+        tag.appendChild(element);
+    });
+}
+
 function addZoom(tag) {
     tag.addEventListener('mouseover', () => {
         tag.classList.toggle('card__zoom');
@@ -61,8 +67,7 @@ function createButtons(container, audioSrc) {
     buttonsContainer.classList.add(`${className}__buttons-container`);
     const rotate_button = createRotateButton(container);
     const voiceButton = createVoiceButton(audioSrc);
-    buttonsContainer.appendChild(voiceButton);
-    buttonsContainer.appendChild(rotate_button);
+    addChildsInParent(buttonsContainer, [voiceButton, rotate_button]);
 
     return buttonsContainer;
 }
@@ -71,8 +76,7 @@ function createActivePanel(container, paragraph, audioSrc) {
     const buttonsContainer = createButtons(container, audioSrc);
     const active_panel = document.createElement("div");
     active_panel.classList.add(`${className}__active-panel`);
-    active_panel.appendChild(paragraph);
-    active_panel.appendChild(buttonsContainer);
+    addChildsInParent(active_panel, [paragraph, buttonsContainer])
 
     return active_panel;
 }
@@ -83,8 +87,7 @@ function createFront(audioSrc, container, paragraph, image) {
 
     const active_panel = createActivePanel(container, paragraph, audioSrc);
 
-    card_front.appendChild(image);
-    card_front.appendChild(active_panel);
+    addChildsInParent(card_front, [image, active_panel]);
 
     return card_front;
 }
@@ -131,9 +134,9 @@ function createWordCard(img, text, audioSrc) {
     const card_front = createFront(audioSrc, container, paragraph, image);
     const card_back = createBack(text);
 
-    container.appendChild(card_front);
-    container.appendChild(card_back);
-    GameLogic.getMain().appendChild(container);
+    addChildsInParent(container, [card_front, card_back]);
+
+    return container;
 }
 
 function createSectionCard(img, text) {
@@ -142,13 +145,13 @@ function createSectionCard(img, text) {
         }
     );
 
-    container.appendChild(image);
-    container.appendChild(paragraph);
-    GameLogic.getMain().appendChild(container);
+    addChildsInParent(container, [image, paragraph]);
 
     return container;
 }   
 
 export function createCard(img, text, isSection, audioSrc) {
-    return isSection ? createSectionCard(img, text) : createWordCard(img, text, audioSrc);
+    const container = isSection ? createSectionCard(img, text) : createWordCard(img, text, audioSrc);
+    GameLogic.getMain().appendChild(container);
+    return container;
 }
