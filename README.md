@@ -2,7 +2,7 @@
 
 ![preview](https://github.com/LexLoz/learn-english-game/assets/136838291/d4d7e4e8-77fd-4250-95e2-e5dc8bca784f)
 
-[Deploy link](learn-english-game-git-main-lexlozs-projects.vercel.app)
+[Deploy link](https://learn-english-game-mpga78onl-lexlozs-projects.vercel.app)
 
 ## Technologies
 + Javascript
